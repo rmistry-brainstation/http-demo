@@ -1,10 +1,10 @@
-const express = require('express')
+const express = require('express');
 const cors = require('cors');
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 app.get('*', (req, res) => {
   logSafeRequest(req);
@@ -31,7 +31,7 @@ app.delete('*', (req, res) => {
   res.send(unsafeResponse(req));
 });
 
-app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${process.env.PORT || port}!`))
+app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${process.env.PORT || port}!`));
 
 // Safe requests: GET, HEAD, OPTIONS
 function logSafeRequest(req) {
@@ -68,5 +68,5 @@ function logUnsafeRequest(req) {
 }
 
 function unsafeResponse(req) {
-  return `${req.method} request received to the path '${req.path}' with the following body: ${JSON.stringify(req.body)}`
+  return `${req.method} request received to the path '${req.path}' with the following body: ${JSON.stringify(req.body)}`;
 }
