@@ -7,6 +7,34 @@ app.use(express.json())
 app.use(cors())
 
 app.get('*', (req, res) => {
+  logSafeRequest(req);
+  res.send(safeResponse(req));
+});
+
+app.post('*', (req, res) => {
+  logUnsafeRequest(req);
+  res.send(unsafeResponse(req));
+});
+
+app.put('*', (req, res) => {
+  logUnsafeRequest(req);
+  res.send(unsafeResponse(req));
+});
+
+app.patch('*', (req, res) => {
+  logUnsafeRequest(req);
+  res.send(unsafeResponse(req));
+});
+
+app.delete('*', (req, res) => {
+  logUnsafeRequest(req);
+  res.send(unsafeResponse(req));
+});
+
+app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${process.env.PORT || port}!`))
+
+// Safe requests: GET, HEAD, OPTIONS
+function logSafeRequest(req) {
   console.log('--------------------------------');
   console.log('|          NEW REQUEST          ');
   console.log('--------------------------------');
@@ -18,11 +46,14 @@ app.get('*', (req, res) => {
   console.log('Headers: ', req.headers);
   console.log('--------------------------------');
   console.log('');
+}
 
-  res.send('Hello World!');
-});
+function safeResponse(req) {
+  return `Hello World! You made a GET request to '${req.path}' with the query params ${JSON.stringify(req.query)}`;
+}
 
-app.post('*', (req, res) => {
+// Unsafe requests: POST, PUT, PATCH, DELETE, CONNECT, TRACE
+function logUnsafeRequest(req) {
   console.log('--------------------------------');
   console.log('|          NEW REQUEST          ');
   console.log('--------------------------------');
@@ -34,8 +65,8 @@ app.post('*', (req, res) => {
   console.log('Headers: ', req.headers);
   console.log('--------------------------------');
   console.log('');
+}
 
-  res.send('Hello World!');
-});
-
-app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${process.env.PORT || port}!`))
+function unsafeResponse(req) {
+  return `${req.method} request received to the path '${req.path}' with the following body: ${JSON.stringify(req.body)}`
+}
